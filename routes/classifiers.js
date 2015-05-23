@@ -24,7 +24,7 @@ var mongoose = require('mongoose'),
 	}),
 	Classifier = mongoose.model('Classifier', ClassifierSchema);
 
-mongoose.connect('mongodb://' + (process.env.DB_ADDRESS || '192.168.99.100:32768'));
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://192.168.99.100:32768');
 
 // ROUTING
 // =============================================================================
