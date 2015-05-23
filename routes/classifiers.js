@@ -24,7 +24,7 @@ var mongoose = require('mongoose'),
 	}),
 	Classifier = mongoose.model('Classifier', ClassifierSchema);
 
-mongoose.connect('mongodb://192.168.99.100:32768'); //connect to database
+mongoose.connect('mongodb://' + (process.env.DB_ADDRESS || '192.168.99.100:32768'));
 
 // ROUTING
 // =============================================================================
@@ -49,7 +49,7 @@ router.route('/')
 			res.status(500).json(errorMessage(100, err));
 			return;
 		}
-		console.log(req.body)
+
 		var name = !!req.body && !!req.body.hasOwnProperty('name') ? req.body.name : '';
 
 		var classifier = new Classifier({ 
@@ -136,7 +136,7 @@ router.route('/:id/categorize')
 		var items = !!req.body && (req.body instanceof Array) ? req.body : [req.body];
 
 		Classifier.findById(req.params.id, function (err, classifier) {
-			var response = {};
+			var response = [];
 
 			if (!err && classifier) {
 				try {
@@ -150,25 +150,27 @@ router.route('/:id/categorize')
 					res.status(400).json(errorMessage(101));
 					return;
 				}
-				items.forEach(function(item) {
-					if (item && 
-						item.hasOwnProperty('text') && typeof item.text === 'string') {
 
-						try {
+				try {
+					items.forEach(function(item) {
+						if (item && item.hasOwnProperty('text') && typeof item.text === 'string') {
+
 							var category = classifier.classifier.categorize(item.text);
 							category.text = item.text;
 							response.push(category);
-						} catch (err) {
-							res.status(500).json(errorMessage(100, err));
+							
+						} else {
+							res.status(500).json(errorMessage(301));
 							return;
 						}
-					} else {
-						res.status(500).json(errorMessage(301));
-						return;
-					}
-				});
+					});
+				} catch (err) {
+					res.status(500).json(errorMessage(100, err));
+					return;
+				}
 			} else {
 				res.status(404).json(errorMessage(200));
+				return;
 			}
 
 			res.status(200).json(response);
