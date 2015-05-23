@@ -61,7 +61,7 @@ router.route('/')
 			if (!err) {
 				res.status(200).json(classifier);
 			} else {
-				res.status(500).json(errorMessage(101));
+				res.status(500).json(errorMessage(201));
 			}
 		});
 	});
