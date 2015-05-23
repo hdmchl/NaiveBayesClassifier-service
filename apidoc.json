@@ -1,7 +1,10 @@
 {
   "name": "NaiveBayesClassier-service",
   "version": "0.1.0",
-  "description": "Naive-Bayes Classification as a service.",
+  "description": "Naive-Bayes Classification, provided as a service.",
+  "header": {
+    "filename": "header.md"
+  },
   "order": [
     "getClassifiers",
     "newClassifier",

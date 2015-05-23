@@ -2,9 +2,9 @@ Naive-Bayes Classification based on [NaiveBayesClassifier](http://github.com/had
 
 # Documentation
 
-API documentation can be found at [http://nbcaas.herokuapp.com](http://nbcaas.herokuapp.com)
+API endpoint descriptions can be found at [http://nbcaas.herokuapp.com](http://nbcaas.herokuapp.com)
 
-You can learn more about the classifier library itself at: [http://github.com/hadimichael/NaiveBayesClassifier](http://github.com/hadimichael/NaiveBayesClassifier)
+You can learn more about the classifier library being used at: [http://github.com/hadimichael/NaiveBayesClassifier](http://github.com/hadimichael/NaiveBayesClassifier)
 
 # License
 

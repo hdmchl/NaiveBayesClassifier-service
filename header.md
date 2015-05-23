@@ -1,0 +1,1 @@
+This web-service is built on top of [NaiveBayesClassifier](http://github.com/hadimichael/NaiveBayesClassifier) and hosted for free at [Heroku](http://www.heroku.com).
