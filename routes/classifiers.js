@@ -34,7 +34,11 @@ router.route('/')
 			if (!err && classifiers) {
 				var response = [];
 				classifiers.forEach(function(classifier) {
-					response.push(classifier);
+					response.push({
+						_id: classifier._id,
+						createdAt: classifier.createdAt,
+						name: classifier.name
+					});
 				});
 				res.status(200).json(response);
 			} else {
