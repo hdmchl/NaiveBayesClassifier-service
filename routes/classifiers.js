@@ -30,7 +30,8 @@ mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://192.168.99.100:32768');
 // =============================================================================
 router.route('/')
 /**
- * @api {get} /classifiers Request array of classifiers available
+ * @api {get} /classifiers Request array of available classifiers
+ * @apiName getClassifiers
  * @apiGroup Classifiers
  * @apiSampleRequest /classifiers
  * @apiVersion 0.1.0
@@ -39,7 +40,7 @@ router.route('/')
  * @apiSuccess {Date} createdAt Creation date
  * @apiSuccess {String} name Friendly name
  *
- * @apiSuccessExample Success-Response:
+ * @apiSuccessExample Example Success-Response:
  *     HTTP/1.1 200 OK
  *     [
  *       {
@@ -70,6 +71,7 @@ router.route('/')
 	})
 /**
  * @api {post} /classifiers Create a new classifier
+ * @apiName newClassifier
  * @apiGroup Classifiers
  * @apiSampleRequest /classifiers
  * @apiVersion 0.1.0
@@ -84,7 +86,7 @@ router.route('/')
  * @apiSuccess {Date} createdAt Creation date
  * @apiSuccess {String} name Friendly name
  *
- * @apiSuccessExample Success-Response:
+ * @apiSuccessExample Example Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *       "__v": 0,
@@ -130,6 +132,40 @@ router.route('/')
 	});
 
 router.route('/:id')
+/**
+ * @api {get} /classifiers/:id Request a classifier
+ * @apiName getClassifier
+ * @apiGroup Classifiers
+ * @apiSampleRequest /classifiers/<CLASSIFIER_ID>
+ * @apiVersion 0.1.0
+ *
+ * @apiSuccess {Number} __v Object version number
+ * @apiSuccess {Object} classifier NaiveBayesClassifier object
+ * @apiSuccess {Date} createdAt Creation date
+ * @apiSuccess {String} name Friendly name
+ * @apiSuccess {String} _id Unique ID
+ *
+ * @apiSuccessExample Example Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "__v": 0,
+ *       "classifier":{
+ *         "VERSION": "0.1.1",
+ *         "options":{},
+ *         "vocabulary":{},
+ *         "vocabularySize": 0,
+ *         "categories":{},
+ *         "docFrequencyCount":{},
+ *         "totalNumberOfDocuments": 0,
+ *         "wordFrequencyCount":{},
+ *         "wordCount":{}
+ *       },
+ *       "createdAt": "2015-05-23T03:16:51.814Z",
+ *       "name": "My awesome classifier",
+ *       "_id": "28086150-00fa-11e5-b131-91339ddb28b0"
+ *     }
+ * 
+ */
 	.get(function (req, res) {
 		Classifier.findById(req.params.id, function (err, classifier) {
 			if (!err && classifier) {
@@ -146,6 +182,35 @@ router.route('/:id')
 	});
 
 router.route('/:id/learn')
+/**
+ * @api {post} /classifiers/:id/learn Teach a classifier
+ * @apiName classifierLearn
+ * @apiGroup Classifiers
+ * @apiSampleRequest /classifiers/<CLASSIFIER_ID>/learn
+ * @apiVersion 0.1.0
+ *
+ * @apiDescription Teach your classifier what `category` some `text` belongs to. 
+ *  The more you teach your classifier, the more reliable it becomes. 
+ *  It will use what it has learned to identify new documents that it hasn't 
+ *  seen before. This endpoint accepts a single object or an array of objects.
+ *
+ * @apiParam {String} text Text that will be tokenized and used for learning
+ * @apiParam {String} category Name of the `category` that the attached `text` belongs to
+ * @apiParamExample {json} Request-Example:
+ *     {
+ *       "text": "amazing, awesome movie!! Yeah!!",
+ *       "category": "positive"
+ *     }
+ *
+ * @apiSuccess {Number} category Number of documents of that category type, that have been learnt
+ *
+ * @apiSuccessExample Example Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "positive": 1
+ *     }
+ * 
+ */
 	.post(function (req, res, next) {
 		// expects:
 		// 	an array of phrases: [ {text: "", category: ""} ]
@@ -191,7 +256,40 @@ router.route('/:id/learn')
 		});
 	});
 
+
 router.route('/:id/categorize')
+/**
+ * @api {post} /classifiers/:id/categorize Classify some text
+ * @apiName classifierCategorize
+ * @apiGroup Classifiers
+ * @apiSampleRequest /classifiers/<CLASSIFIER_ID>/categorize
+ * @apiVersion 0.1.0
+ *
+ * @apiDescription This will return the most likely `category` the classifier thinks some
+ *  `text` belongs to and its probability. Its judgement is based on what you have taught 
+ *  it with `.learn(text, category)`.
+ *
+ * @apiParam {String} text Text that will be tokenized and used for learning
+ * @apiParamExample {json} Request-Example:
+ *     {
+ *       "text": "amazing, awesome movie!! Yeah!!"
+ *     }
+ *
+ * @apiSuccess {Number} category Number of documents of that category type, that have been learnt
+ *
+ * @apiSuccessExample Example Success-Response:
+ *     HTTP/1.1 200 OK
+ *     { 
+ *       "category": "positive",
+ *       "probability": 0.768701215200234,
+ *       "categories": { 
+ *         "positive": 0.768701215200234,
+ *         "negative": 0.15669449587155276,
+ *         "neutral": 0.07460428892821327
+ *       } 
+ *     }
+ * 
+ */
 	.post(function (req, res, next) {
 		// expects:
 		// 	an array of phrases with option request ids: [ {text: ""} ]

@@ -13,7 +13,7 @@
     "url": "https://github.com/hadimichael/NaiveBayesClassifier-service.git"
   },
   "apidoc": {
-    "title": "NBCAAS",
+    "title": "NBCAAS | API Documentation",
     "url" : "https://nbcaas.herokuapp.com"
   },
   "dependencies": {

@@ -15,5 +15,5 @@ gulp.task('apidoc', function(){
 
 // Build, test and generate docs, every time we update the code
 gulp.task('watch', function() {
-  gulp.watch(path.routes, ['apidoc']);
+  gulp.watch([path.routes, 'apidoc.json'], ['apidoc']);
 });
