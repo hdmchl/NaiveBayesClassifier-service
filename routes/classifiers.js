@@ -29,6 +29,28 @@ mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://192.168.99.100:32768');
 // ROUTING
 // =============================================================================
 router.route('/')
+/**
+ * @api {get} /classifiers Request array of classifiers available
+ * @apiGroup Classifiers
+ * @apiSampleRequest /classifiers
+ * @apiVersion 0.1.0
+ *
+ * @apiSuccess {String} _id unique Classifier id
+ * @apiSuccess {Date} createdAt Creation date
+ * @apiSuccess {String} name Friendly name
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     [
+ *       {
+ *         "_id": "555f104961af2d9b4bf7dae1",
+ *         "createdAt": "2015-05-23T02:56:01.722Z",
+ *         "name": "My awesome SPAM classifier"
+ *       },
+ *       ...
+ *     ]
+ * 
+ */
 	.get(function (req, res) { //get all classifiers
 		Classifier.find({}, function(err, classifiers) {
 			if (!err && classifiers) {
@@ -46,6 +68,43 @@ router.route('/')
 			}
 		});
 	})
+/**
+ * @api {post} /classifiers Create a new classifier
+ * @apiGroup Classifiers
+ * @apiSampleRequest /classifiers
+ * @apiVersion 0.1.0
+ *
+ * @apiParam {String} [name] Friendly name for classifier. Will be blank if not specified.
+ * @apiParamExample {json} Request-Example:
+ *     {
+ *       "name": "My awesome SPAM classifier"
+ *     }
+ *
+ * @apiSuccess {String} _id unique Classifier id
+ * @apiSuccess {Date} createdAt Creation date
+ * @apiSuccess {String} name Friendly name
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "__v": 0,
+ *       "classifier":{
+ *         "VERSION": "0.1.1",
+ *         "options":{},
+ *         "vocabulary":{},
+ *         "vocabularySize": 0,
+ *         "categories":{},
+ *         "docFrequencyCount":{},
+ *         "totalNumberOfDocuments": 0,
+ *         "wordFrequencyCount":{},
+ *         "wordCount":{}
+ *       },
+ *       "createdAt": "2015-05-23T03:16:51.814Z",
+ *       "name": "My awesome classifier",
+ *       "_id": "28086150-00fa-11e5-b131-91339ddb28b0"
+ *     }
+ * 
+ */
 	.post(function (req, res) { //create new classifier
 		try {
 			var newClassifier = new NaiveBayesClassifier();

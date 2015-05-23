@@ -1,12 +1,20 @@
 {
-  "name": "naivebayesclassier-service",
-  "version": "1.0.0",
-  "description": "Naive-Bayes Classifiers as a service.",
+  "name": "NaiveBayesClassifier-service",
+  "version": "0.1.0",
+  "description": "Naive-Bayes Classification as a service.",
   "main": "app.js",
   "author": "Hadi Michael",
   "license": "BSD-3-Clause",
   "scripts": {
     "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hadimichael/NaiveBayesClassifier-service.git"
+  },
+  "apidoc": {
+    "title": "NBCAAS",
+    "url" : "https://nbcaas.herokuapp.com"
   },
   "dependencies": {
     "body-parser": "^1.12.4",
@@ -14,5 +22,9 @@
     "mongoose": "^4.0.3",
     "naivebayesclassifier": "^0.1.1",
     "node-uuid": "^1.4.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-apidoc": "^0.1.4"
   }
 }

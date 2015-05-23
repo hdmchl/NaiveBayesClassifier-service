@@ -10,6 +10,7 @@ app.use(bodyParser.json());
 
 // DEFINE ROUTES
 // =============================================================================
+app.use('/', express.static('docs/'));
 app.use('/classifiers', require('./routes/classifiers'));
 
 // START THE SERVER
